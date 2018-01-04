@@ -1,6 +1,8 @@
+import * as d3 from "d3"
+
 let url = 'https://raw.githubusercontent.com/FreeCodeCamp/ProjectReferenceData/master/GDP-data.json'
-let height = 600
-let colWidth = 4
+let height = 400
+let colWidth = 3
 
 let mx = a => {
   let res = 0, i = 0, l = a.length
@@ -13,8 +15,10 @@ let mx = a => {
   return res
 }
 
-let chart = d3.select('body')
-  .select('.chart')
+let svg = d3.select('svg')
+let main = d3.select('.main')
+let chart = d3.select('.chart')
+  .attr('transform', 'translate(15, 15)')
   .attr('height', height)    
 
 d3.json(url, (error, res) => {
@@ -31,6 +35,14 @@ d3.json(url, (error, res) => {
       .domain([0, mx(value)])
       .range([0, height])
 
+    svg
+      .attr('height', height + 90)
+      .attr('width', width + 30)
+
+    main
+      .attr('height', height + 90)
+      .attr('width', width + 30)
+  
     chart.attr('width', width)
       .selectAll('g')
       .data(value)
