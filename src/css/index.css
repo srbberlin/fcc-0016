@@ -1,5 +1,36 @@
+body {
+  font-family: sans-serif;
+}
+
+thead {
+  font-size: 15px;
+  font-weight: bold;
+}
+
+thead td, tfoot td {
+  padding: 10px;
+  text-align: center;
+}
+
+tbody {
+  font-size: 12px;
+}
+
+tbody td {
+  padding: 5px;
+  vertical-align: top;
+}
+
 .main {
   fill: greenyellow;
+}
+
+.box {
+  fill: aquamarine
+}
+
+.text {
+  margin: 10px;
 }
 
 .chart rect {
