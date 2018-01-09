@@ -110,7 +110,5 @@ d3.json(url, (error, res) => {
       .append('g')
       .attr('transform', 'translate(' + (width + 10) + ', 0)')
       .call(valueAxis)
-      .selectAll('.tick text')
-      .style('text-anchor', 'start')
   }
 })
