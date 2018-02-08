@@ -1,5 +1,5 @@
 # fcc-0016
-Gross Domestic Product of the USA
+FreeCodeCamp: Gross Domestic Product of the USA
 
 Packages:
 
