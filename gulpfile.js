@@ -12,10 +12,10 @@ var config = {
   jsin:    __dirname + '/src/js/**/*.js',
   jsentry: __dirname + '/src/js/index.js',
   imgin:   __dirname + '/src/img/**/*',
-  cssout:  __dirname + '/dest/css/',
-  jsout:   __dirname + '/dest/js/',
-  imgout:  __dirname + '/dest/img/',
-  htmlout: __dirname + '/dest'
+  cssout:  __dirname + '/docs/css/',
+  jsout:   __dirname + '/docs/js/',
+  imgout:  __dirname + '/docs/img/',
+  htmlout: __dirname + '/docs'
 }
 
 gulp.task('reload', function () {
