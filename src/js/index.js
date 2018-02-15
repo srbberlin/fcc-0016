@@ -87,7 +87,7 @@ d3.json(url, (error, res) => {
       })
 
     footer
-      .html('<td colspan="2">' + 'TEST' + '</td>')
+      .html('<td colspan="2">' + '' + '</td>')
 
     chart.attr('width', width)
       .selectAll('g')
