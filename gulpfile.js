@@ -17,11 +17,16 @@ var config = {
   cssout:  __dirname + '/docs/css/',
   jsout:   __dirname + '/docs/js/',
   imgout:  __dirname + '/docs/img/',
-  htmlout: __dirname + '/docs'
+  htmlout: __dirname + '/docs/'
 }
 
-function reload () {
+function clean () {
+  return del([config.htmlout + '*'])
+}
+
+function reload (cb) {
   browserSync.reload()
+  cb()
 }
 
 function serve () {
@@ -57,31 +62,22 @@ function scripts () {
 
 function images () {
   let path = config.imgin
-  return gulp.src(path)
+  return gulp
+    .src(path)
     .pipe(gulp.dest(config.imgout))
 }
 
 function html () {
   let path = config.htmlin
-  return gulp.src(path)
+  return gulp
+    .src(path)
     .pipe(gulp.dest(config.htmlout))
 }
 
-function clean () {
-  let paths = [
-    config.jsout + '/**/*.js',
-    config.cssout + '/**/*.css',
-    config.imgout + '/**/*',
-    config.htmlout + '/**/*.html'
-  ]
-  let res
-  res = del(paths)
-  res.then(function () {
-  }).catch(function () {
-  })
-  return res
+function build (cb) {
+  gulp.series(clean, gulp.parallel(html, images, scripts, css))(cb)
 }
 
-exports.build = gulp.parallel(scripts, css, html, images)
-exports.default = serve
-
+exports.build = build
+exports.clean = clean
+exports.default = gulp.series(build, serve)
