@@ -2,6 +2,18 @@ let url = 'https://raw.githubusercontent.com/FreeCodeCamp/ProjectReferenceData/m
 let height = 400
 let colWidth = 3
 
+let toolTip = document.getElementById('tooltip')
+let svg = d3.select('svg')
+let main = d3.select('.main')
+let chart = d3.select('.chart')
+let box = d3.select('.box')
+let foObj = d3.select('foreignObject')
+let head = d3.select('.text thead')
+let body = d3.select('.text tbody')
+let footer = d3.select('.text tfoot')
+
+toolTip.style.visibility = 'hidden'
+
 let mx = a => {
   let res = 0, i = 0, l = a.length
   while (i < l) {
@@ -13,16 +25,16 @@ let mx = a => {
   return res
 }
 
-let svg = d3.select('svg')
-let main = d3.select('.main')
-let chart = d3.select('.chart')
-  .attr('transform', 'translate(15, 15)')
-  .attr('height', height)
-let box = d3.select('.box')
-let foObj = d3.select('foreignObject')
-let head = d3.select('.text thead')
-let body = d3.select('.text tbody')
-let footer = d3.select('.text tfoot')
+let movr = e => {
+  toolTip.innerText = e.target.attributes[3].value + ', ' + e.target.attributes[4].value
+  toolTip.style.visibility = 'visible'
+  toolTip.setAttribute('data-date', e.target.attributes[3].value)
+  toolTip.setAttribute('data-gdp', e.target.attributes[4].value)
+}
+
+let mout = () => {
+  toolTip.style.visibility = 'hidden'
+}
 
 d3.json(url, (error, res) => {
   if (! error) {
@@ -32,7 +44,7 @@ d3.json(url, (error, res) => {
     let name = res.name.split(',')[0] + ' of the USA'
     let des = res.description.split('\n')
     let value = res.data
-    let width = colWidth * value.length
+    let width = colWidth * value.length - 2
 
     let barScale = d3.scaleLinear()
       .domain([0, mx(value)])
@@ -89,26 +101,40 @@ d3.json(url, (error, res) => {
     footer
       .html('<td colspan="2">' + '' + '</td>')
 
-    chart.attr('width', width)
+    chart
+      .attr('transform', 'translate(15, 15)')
+      .attr('height', height)
+      .attr('width', width)
       .selectAll('g')
       .data(value)
       .enter()
       .append('g')
       .append('rect')
+      .attr('class', 'bar')
       .attr('width', colWidth - 1)
       .attr('height', (d) => { return barScale(d[1]) })
+      .attr('data-date', (d) => { return d[0] })
+      .attr('data-gdp', (d) => { return d[1] })
       .attr('transform', (d, i) => {
         return 'translate(' + i * colWidth + ',' + (height - barScale(d[1])) + ')'
       })
 
     chart
       .append('g')
+      .attr('id', 'x-axis')
       .attr('transform', 'translate(0, ' + (height + 10) + ')')
       .call(timeAxis)
 
     chart
       .append('g')
+      .attr('id', 'y-axis')
       .attr('transform', 'translate(' + (width + 10) + ', 0)')
       .call(valueAxis)
   }
+
+  var bars = document.getElementsByClassName('bar')
+  for (var i = 0; i < bars.length; i++) {
+    bars[i].addEventListener('mouseover', movr)
+    bars[i].addEventListener('mouseout', mout)
+  }  
 })
